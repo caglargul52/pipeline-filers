@@ -1,6 +1,6 @@
 ﻿namespace PipelineFilters
 {
-    public class Pipeline<T> where T : class
+    public class Pipeline<T> where T : class, new()
     {
         public List<IStep<T>> Steps { get; } = new();
         public IStep<T>? CurrentStep { get; set; }
@@ -8,9 +8,12 @@
 
         private readonly PipelineContext _context;
 
+        private T _currentDto;
+
         public Pipeline(PipelineContext context)
         {
             _context = context;
+            _currentDto = new T();
         }
         public void AddStep(IStep<T> step)
         {
@@ -30,31 +33,29 @@
             }
         }
 
-        public async Task<(T Data, StepError? Error)> ExecuteAsync(T input)
+        public async Task<(T Data, StepError? Error)> ExecuteAsync()
         {
-            T current = input;
-
             if (CurrentStep?.Error is not null)
             {
-                return (current, CurrentStep?.Error);
+                return (_currentDto, CurrentStep?.Error);
             }
 
             for (int i = CurrentStepIndex; i < Steps.Count; i++)
             {
-                current = await Steps[i].ExecuteAsync(current);
+                _currentDto = await Steps[i].ExecuteAsync(_currentDto);
 
                 CurrentStep = Steps[i];
 
                 if (Steps[i].Error is not null)
                 {
-                    return (current, Steps[i].Error);
+                    return (_currentDto, Steps[i].Error);
                 }
                 
                 CurrentStepIndex++;
 
             }
 
-            return (current, null);
+            return (_currentDto, null);
         }
     }
 

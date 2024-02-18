@@ -2,7 +2,7 @@
 
 namespace PipelineFilters
 {
-    public interface IStep<T> where T : class
+    public interface IStep<T> where T : class, new()
     {
         StepError? Error { get; set; }
         Task<T> ExecuteAsync(T input);

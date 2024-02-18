@@ -7,7 +7,7 @@
         public string Severity { get; set; }
     }
 
-    public abstract class StepBase<T> : IStep<T> where T : class
+    public abstract class StepBase<T> : IStep<T> where T : class, new()
     {
         public PipelineContext? Context { get; private set; }
         public Pipeline<T> Pipeline { get; private set; }

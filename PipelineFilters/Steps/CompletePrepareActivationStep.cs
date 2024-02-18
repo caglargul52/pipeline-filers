@@ -6,6 +6,7 @@
         {
             Console.WriteLine("CompletePrepareActivationStep");
 
+            Console.WriteLine(input.IsPasswordExpired);
             return await Task.FromResult(input);
         }
     }

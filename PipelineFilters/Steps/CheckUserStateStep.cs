@@ -7,6 +7,7 @@
             Console.WriteLine("CheckUserStateStep");
 
             input.IsPasswordExpired = true;
+            input.Token = Guid.NewGuid().ToString();
 
             return await Task.FromResult(input);
         }

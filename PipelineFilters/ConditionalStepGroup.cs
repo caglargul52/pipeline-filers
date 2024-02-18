@@ -16,7 +16,6 @@ namespace PipelineFilters
             else
             {
                 group.Add(new CheckTempPasswordExpiredStep());
-
                 group.Add(new ResetPasswordRetryCountStep());
                 group.Add(new CheckPasswordExpiredStep());
                 group.Add(new AddLoginHistoryStep());
