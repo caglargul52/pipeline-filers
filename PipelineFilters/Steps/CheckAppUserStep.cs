@@ -10,10 +10,6 @@
         {
             Console.WriteLine("CheckAppUserStep");
 
-            //var token = _authService.GetJwtToken();
-
-            //input.Message = token;
-
             return await Task.FromResult(input);
         }
 

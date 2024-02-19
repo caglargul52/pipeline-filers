@@ -15,7 +15,7 @@
             _context = context;
             _currentDto = new T();
         }
-        public void AddStep(IStep<T> step)
+        public void AddStep2(IStep<T> step)
         {
             step.AddContext(_context);
             step.AddPipeline(this);
@@ -33,7 +33,7 @@
             return await ExecuteAsync();
         }
 
-        public Pipeline<T> AddStep2(IStep<T> step)
+        public Pipeline<T> AddStep(IStep<T> step)
         {
             step.AddContext(_context);
             step.AddPipeline(this);
@@ -43,7 +43,7 @@
             return this;
         }
 
-        public void AddRangeStep(List<IStep<T>> steps)
+        public void AddRangeStep2(List<IStep<T>> steps)
         {
             foreach (IStep<T> step in steps) 
             {
@@ -53,7 +53,7 @@
             }
         }
 
-        public Pipeline<T> AddRangeStep2 (List<IStep<T>> steps)
+        public Pipeline<T> AddRangeStep(List<IStep<T>> steps)
         {
             foreach (IStep<T> step in steps)
             {

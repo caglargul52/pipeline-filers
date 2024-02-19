@@ -22,36 +22,19 @@ namespace PipelineFilters.Controllers
         {
             var pipeline = new Pipeline<PrepareActivationStepDto>(_context);
 
-            pipeline.AddStep(new CheckAppUserStep(isBypassed: true));
-
-            var checkUserStateStepResult = await pipeline.AddStepAndExecute(new CheckUserStateStep());
-
-            pipeline.AddRangeStep(ConditionalStepGroup.GetCentralLoginSteps(checkUserStateStepResult.Data));
-
-            pipeline.AddStep(new CheckUserStaticIPAddressStep());
-
-            pipeline.AddStep(new GetActivationStep());
-
-            var completePrepareActivationStepResult = await pipeline.AddStepAndExecute(new CompletePrepareActivationStep());
-
-            /*
-
-            var result1 = await pipeline
-                .AddStep2(new CheckAppUserStep())
-                .AddStep2(new CheckUserStateStep())
+            var getUserLoginInfoStepResult = await pipeline
+                .AddStep(new CheckAppUserStep(isBypassed: true))
+                .AddStep(new CheckUserStateStep())
+                .AddStep(new GetUserLoginInfoStep())
                 .ExecuteAsync();
 
-            //pipeline.AddStep(_serviceProvider.GetRequiredService<GetUserLoginInfoStep>());
 
-            //var result2 = await pipeline.ExecuteAsync();
-
-            var result3 = await pipeline
-                .AddRangeStep2(ConditionalStepGroup.GetCentralLoginSteps(result1.Data))
-                .AddStep2(new CheckUserStaticIPAddressStep())
-                .AddStep2(new GetActivationStep())
-                .AddStep2(new CompletePrepareActivationStep())
+            var result = await pipeline
+                .AddRangeStep(ConditionalStepGroup.GetCentralLoginSteps(getUserLoginInfoStepResult.Data))
+                .AddStep(new CheckUserStaticIPAddressStep())
+                .AddStep(new GetActivationStep())
+                .AddStep(new CompletePrepareActivationStep())
                 .ExecuteAsync();
-            */
         }
     }
 }
