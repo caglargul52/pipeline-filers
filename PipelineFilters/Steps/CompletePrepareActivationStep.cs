@@ -6,6 +6,8 @@
         {
             Console.WriteLine("CompletePrepareActivationStep");
 
+            Console.WriteLine("Token Alındı : " + input.Token);
+
             return await Task.FromResult(input);
         }
     }

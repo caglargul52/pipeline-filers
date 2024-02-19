@@ -1,10 +1,10 @@
 ﻿namespace PipelineFilters
 {
-    public class PrepareActivationStepDto
+    public record PrepareActivationStepDto
     {
-        public string Message { get; set; }
-        public object CentralLogin { get; internal set; }
-        public bool IsPasswordExpired { get; set; }
-        public string Token { get; set; }
+        public string Message { get; init; }
+        public object CentralLogin { get; init; }
+        public bool IsPasswordExpired { get; init; }
+        public string Token { get; init; }
     }
 }

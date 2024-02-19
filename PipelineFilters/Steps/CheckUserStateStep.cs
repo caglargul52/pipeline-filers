@@ -6,7 +6,13 @@
         {
             Console.WriteLine("CheckUserStateStep");
 
-            return await Task.FromResult(input);
+            var token = "dasıdjasd";
+
+            Console.WriteLine("Token oluşturuldu : " + token);
+
+            var output = input with { Token = token };
+
+            return await Task.FromResult(output);
         }
     }
 }

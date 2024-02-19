@@ -6,8 +6,6 @@
         {
             Console.WriteLine("CheckUserStaticIPAddressStep");
 
-            input.Token = "m";
-            input.IsPasswordExpired = false;
             return await Task.FromResult(input);
         }
     }
