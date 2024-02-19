@@ -24,19 +24,34 @@ namespace PipelineFilters.Controllers
 
             pipeline.AddStep(new CheckAppUserStep(isBypassed: true));
 
-            pipeline.AddStep(new CheckUserStateStep());
+            var checkUserStateStepResult = await pipeline.AddStepAndExecute(new CheckUserStateStep());
+
+            pipeline.AddRangeStep(ConditionalStepGroup.GetCentralLoginSteps(checkUserStateStepResult.Data));
+
+            pipeline.AddStep(new CheckUserStaticIPAddressStep());
+
+            pipeline.AddStep(new GetActivationStep());
+
+            var completePrepareActivationStepResult = await pipeline.AddStepAndExecute(new CompletePrepareActivationStep());
+
+            /*
+
+            var result1 = await pipeline
+                .AddStep2(new CheckAppUserStep())
+                .AddStep2(new CheckUserStateStep())
+                .ExecuteAsync();
 
             //pipeline.AddStep(_serviceProvider.GetRequiredService<GetUserLoginInfoStep>());
 
-            var result = await pipeline.ExecuteAsync();
+            //var result2 = await pipeline.ExecuteAsync();
 
-            pipeline.AddRangeStep(ConditionalStepGroup.GetCentralLoginSteps(result.Data));
-
-            pipeline.AddStep(new CheckUserStaticIPAddressStep());
-            pipeline.AddStep(new GetActivationStep());
-            pipeline.AddStep(new CompletePrepareActivationStep());
-
-            var result2 = await pipeline.ExecuteAsync();
+            var result3 = await pipeline
+                .AddRangeStep2(ConditionalStepGroup.GetCentralLoginSteps(result1.Data))
+                .AddStep2(new CheckUserStaticIPAddressStep())
+                .AddStep2(new GetActivationStep())
+                .AddStep2(new CompletePrepareActivationStep())
+                .ExecuteAsync();
+            */
         }
     }
 }
