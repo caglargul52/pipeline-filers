@@ -15,24 +15,7 @@
             _context = context;
             _currentDto = new T();
         }
-        public void AddStep2(IStep<T> step)
-        {
-            step.AddContext(_context);
-            step.AddPipeline(this);
-
-            Steps.Add(step);
-        }
-
-        public async Task<(bool IsSucess, T Data, StepError? Error)> AddStepAndExecute(IStep<T> step)
-        {
-            step.AddContext(_context);
-            step.AddPipeline(this);
-
-            Steps.Add(step);
-
-            return await ExecuteAsync();
-        }
-
+        
         public Pipeline<T> AddStep(IStep<T> step)
         {
             step.AddContext(_context);
@@ -41,16 +24,6 @@
             Steps.Add(step);
 
             return this;
-        }
-
-        public void AddRangeStep2(List<IStep<T>> steps)
-        {
-            foreach (IStep<T> step in steps) 
-            {
-                step.AddContext(_context);
-
-                Steps.Add(step);
-            }
         }
 
         public Pipeline<T> AddRangeStep(List<IStep<T>> steps)
@@ -65,7 +38,7 @@
             return this;
         }
 
-        public async Task<(bool IsSucess, T Data, StepError? Error)> ExecuteAsync()
+        public async Task<(bool IsSuccess, T Data, StepError? Error)> ExecuteAsync()
         {
             if (CurrentStep?.Error is not null)
             {

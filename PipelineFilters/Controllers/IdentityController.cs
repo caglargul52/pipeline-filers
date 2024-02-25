@@ -23,7 +23,7 @@ namespace PipelineFilters.Controllers
             var pipeline = new Pipeline<PrepareActivationStepDto>(_context);
 
             var getUserLoginInfoStepResult = await pipeline
-                .AddStep(new CheckAppUserStep(isBypassed: true))
+                .AddStep(new CheckAppUserStep())
                 .AddStep(new CheckUserStateStep())
                 .AddStep(new GetUserLoginInfoStep())
                 .ExecuteAsync();

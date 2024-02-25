@@ -13,37 +13,29 @@
         public Pipeline<T> Pipeline { get; private set; }
 
         public StepError? Error { get; set; }
-
-        public bool IsBypassed { get; set; } = false;
-
+        
+        private T CurrentDto;
+        
         public abstract Task<T> ProcessAsync(T input);
 
-        public StepBase(bool isBypassed = false)
-        {
-            IsBypassed = isBypassed;
-        }
-
-        public void ThrowStepError(string errorMessage, string errorCode, string severity)
+        protected T ThrowStepError(string errorMessage, string errorCode, string severity)
         {
             Error ??= new StepError();
 
             Error.ErrorMessage = errorMessage;
             Error.ErrorCode = errorCode;
             Error.Severity = severity;
+
+            return CurrentDto;
         }
 
         public async Task<T> ExecuteAsync(T input)
         {
-            if (IsBypassed)
-            {
-                return await Task.FromResult(input);
-            }
-
-            T current = input;
+            CurrentDto = input;
 
             try
             {
-                current = await ProcessAsync(input);
+                CurrentDto = await ProcessAsync(input);
             }
             catch (Exception ex)
             {
@@ -60,7 +52,7 @@
 
             // Loglama vs. işlemleri yapılabilir.
 
-            return current;
+            return CurrentDto;
         }
 
         public void AddContext(PipelineContext context)

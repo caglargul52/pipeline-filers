@@ -6,6 +6,8 @@
         {
             Console.WriteLine("CheckUserStateStep");
 
+            return ThrowStepError("hata", "hata", "hata");
+            
             var token = "dasıdjasd";
 
             Console.WriteLine("Token oluşturuldu : " + token);
