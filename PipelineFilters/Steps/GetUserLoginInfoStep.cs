@@ -7,8 +7,8 @@ namespace PipelineFilters.Steps
         public override async Task<PrepareActivationStepDto> ProcessAsync(PrepareActivationStepDto input)
         {
             Console.WriteLine("GetUserLoginInfoStep");
-
-            return await Task.FromResult(input);
+            
+            return Next(input);
         }
     }
 }

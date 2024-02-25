@@ -5,6 +5,7 @@ namespace PipelineFilters
     public interface IStep<T> where T : class, new()
     {
         StepError? Error { get; set; }
+        bool IsContinueProcess { get; set; }
         Task<T> ExecuteAsync(T input);
         void AddContext(PipelineContext context);
 

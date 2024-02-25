@@ -13,7 +13,9 @@
         public Pipeline<T> Pipeline { get; private set; }
 
         public StepError? Error { get; set; }
-        
+
+        public bool IsContinueProcess { get; set; }
+
         private T CurrentDto;
         
         public abstract Task<T> ProcessAsync(T input);
@@ -27,6 +29,18 @@
             Error.Severity = severity;
 
             return CurrentDto;
+        }
+
+        protected T Next(T output)
+        {
+            IsContinueProcess = true;
+            return output;
+        }
+        
+        protected T Stop(T output)
+        {
+            IsContinueProcess = false;
+            return output;
         }
 
         public async Task<T> ExecuteAsync(T input)

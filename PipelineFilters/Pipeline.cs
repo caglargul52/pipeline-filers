@@ -44,7 +44,12 @@
             {
                 return new ExecutionResult<T>(false, _currentDto, CurrentStep?.Error);
             }
-
+            
+            if (CurrentStep?.IsContinueProcess == false)
+            {
+                return new ExecutionResult<T>(true, _currentDto, null);
+            }
+            
             for (int i = CurrentStepIndex; i < Steps.Count; i++)
             {
                 _currentDto = await Steps[i].ExecuteAsync(_currentDto);
@@ -56,12 +61,15 @@
                     return new ExecutionResult<T>(false, _currentDto, Steps[i].Error);
                 }
                 
+                if (!Steps[i].IsContinueProcess)
+                {
+                    break;
+                }
+                
                 CurrentStepIndex++;
-
             }
 
             return new ExecutionResult<T>(true, _currentDto, null);
         }
     }
-
 }

@@ -7,8 +7,8 @@
             Console.WriteLine("CheckAppUserStep");
 
             var output = input with { Message = "Deneme" };
-            
-            return await Task.FromResult(output);
+
+            return Next(output);
         }
     }
 }
