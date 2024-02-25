@@ -38,11 +38,11 @@
             return this;
         }
 
-        public async Task<(bool IsSuccess, T Data, StepError? Error)> ExecuteAsync()
+        public async Task<ExecutionResult<T>> ExecuteAsync()
         {
             if (CurrentStep?.Error is not null)
             {
-                return (false, _currentDto, CurrentStep?.Error);
+                return new ExecutionResult<T>(false, _currentDto, CurrentStep?.Error);
             }
 
             for (int i = CurrentStepIndex; i < Steps.Count; i++)
@@ -53,14 +53,14 @@
 
                 if (Steps[i].Error is not null)
                 {
-                    return (false, _currentDto, Steps[i].Error);
+                    return new ExecutionResult<T>(false, _currentDto, Steps[i].Error);
                 }
                 
                 CurrentStepIndex++;
 
             }
 
-            return (true, _currentDto, null);
+            return new ExecutionResult<T>(true, _currentDto, null);
         }
     }
 
